@@ -18,6 +18,25 @@ grad = zeros(size(theta));
 %               derivatives of the cost w.r.t. each parameter in theta
 
 
+%J = 1 / m * (sum(-y .* log(sigmoid(X * theta)) .- (1 .- y) .* (log(1 - sigmoid(X * theta))))) + (lambda/(2*m) * (sum(theta.^2 ) )) ;
+
+%temp1 = 1 / m * (sum((sigmoid(X * theta) .- y ) .*  X ) )';
+
+%temp2 = 1 / m * (sum((sigmoid(X * theta) .- y ) .*  X ) )' .+ (lambda / m) .* theta ;
+
+%grad = temp2;
+
+%grad(1) = temp1(1);
+
+predictions = sigmoid(X*theta); % predictions of hypothesis on all m
+errors = -y .* log(predictions) - (1-y) .* log(1-predictions); % errors
+regTerm = lambda/(2*m) * sum(theta(2:size(theta)).^2); % regularization term
+J = 1/m * sum(errors) + regTerm;
+
+grad = 1/m .* X' * (predictions - y);
+temp = theta; 
+temp(1) = 0;   % because we don't add anything for j = 0
+grad = grad + lambda / m * temp;
 
 
 
